@@ -28,14 +28,19 @@ $insertOrders = $connect->prepare("INSERT INTO tblorders(order_id,product_code,o
 $insertOrders->bind_param('isssssssssssisiiissss', $orderId,$productCode,$orderDate,$requiredDate,$requiredTime,$customerName,$address,$labelAddreess,$email,$phoneNumber,$product,$variation,$quantity,$add_ons,$price,$subTotal,$totalAmount,$paymentPhoto,$imgProduct,$orderType,$orderStatus);
 $insertOrders->execute();
 if($insertOrders){
+    $response['success'] = "1";
     $cartStatus = "ordered";
     $updateCart = $connect->prepare("UPDATE cart SET cart_status=? WHERE email=?");
     $updateCart->bind_param('ss',$cartStatus,$email);
     $updateCart->execute();
-    if($updateCart){
-        $response['success'] = "1";
-    }
 }
 echo json_encode($response);
-
+/*
+ $cartStatus = "ordered";
+    $updateCart = $connect->prepare("UPDATE cart SET cart_status=? WHERE email=?");
+    $updateCart->bind_param('ss',$cartStatus,$email);
+    $updateCart->execute();
+    if($updateCart){
+      
+    }*/
 ?>
