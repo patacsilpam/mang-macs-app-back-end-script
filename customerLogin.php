@@ -3,11 +3,11 @@ error_reporting(0);
 require 'database/connection.php';
 $myemail = $_GET["email_address"];
 $mypassword = $_GET["user_password"];
-$query = $connect->prepare("SELECT id,fname,lname,email_address,user_password,gender,user_status FROM tblcustomers WHERE email_address=?");
+$query = $connect->prepare("SELECT id,customer_id,fname,lname,email_address,user_password,gender,user_status FROM tblcustomers WHERE email_address=?");
 $query->bind_param('s',$myemail);
 $query->execute();
 $query->store_result();
-$query->bind_result($id,$fname,$lname,$email,$pword,$gender,$status);
+$query->bind_result($id,$customerId,$fname,$lname,$email,$pword,$gender,$status);
 
 if($query->num_rows == 1){
     $query->fetch();
@@ -18,7 +18,8 @@ if($query->num_rows == 1){
         $response['lname'] = $lname;
         $response['email_address'] = $email;
         $response['gender'] = $gender;
-        //$reponse['user_password'] =  $query['user_password'];
+        $response['customer_id'] = $customerId;
+       
       }
       else{
         $response['success'] = "2";
