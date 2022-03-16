@@ -43,9 +43,9 @@ foreach($productCode as $index => $id){
     $priceList = $price[$index];
     $subTotalList = $subTotal[$index];
     $imgProductList = $imgProduct[$index];
-    $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,customer_id,product_code,order_id,email,product_name,product_variation,quantity,price,add_ons,product_image) 
-    VALUES(?,?,?,?,?,?,?,?,?,?,?)");
-    $insertOrderDetails->bind_param('issssssiiss',$orderId,$customerIDS,$productCodeList,$ids,$email,$productList,$variationList,$quantityList,$priceList,$addOnsList,$imgProductList);
+    $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,customer_id,product_code,order_id,email,product_name,product_variation,quantity,price,add_ons,product_image,order_type,order_status) 
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $insertOrderDetails->bind_param('issssssiissss',$orderId,$customerIDS,$productCodeList,$ids,$email,$productList,$variationList,$quantityList,$priceList,$addOnsList,$imgProductList,$orderType,$orderStatus);
     $insertOrderDetails->execute();
     if($insertOrderDetails)
         $response['success'] = "1";
@@ -55,9 +55,9 @@ foreach($productCode as $index => $id){
         $updateCart->execute();
         echo json_encode($response);
 }
-$insertCustomerOrder = $connect->prepare("INSERT INTO tblcustomerorder(id,customer_id,order_id,created_at,required_date,required_time,customer_name,customer_address,label_address,email,phone_number,order_type,order_status,total_amount,payment_photo) 
-VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+$insertCustomerOrder = $connect->prepare("INSERT INTO tblcustomerorder(id,customer_id,order_id,created_at,required_date,required_time,customer_name,customer_address,label_address,email,phone_number,total_amount,payment_photo) 
+VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
 echo $connect->error;
-$insertCustomerOrder->bind_param('issssssssssssis',$orderId,$customerIDS,$ids,$orderDate,$requiredDate,$requiredTime,$customerName,$address,$labelAddreess,$email,$phoneNumber,$orderType,$orderStatus,$totalAmount,$paymentPhoto);
+$insertCustomerOrder->bind_param('issssssssssis',$orderId,$customerIDS,$ids,$orderDate,$requiredDate,$requiredTime,$customerName,$address,$labelAddreess,$email,$phoneNumber,$totalAmount,$paymentPhoto);
 $insertCustomerOrder->execute();
 ?>
