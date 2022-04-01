@@ -3,13 +3,15 @@ require 'database/connection.php';
 date_default_timezone_set('Asia/Manila');
 $orderId;
 $customer_id = $_POST['customerID'];
-$orderNumber = "#".bin2hex(openssl_random_pseudo_bytes(10));
+$dateCode = date('Ymd');
+$orderNumber = $dateCode.bin2hex(openssl_random_pseudo_bytes(10));
 $customerIDS;
 $productCode = $_POST['productCode'];//array
 $orderDate = date('y-m-d h:i:s');
 $requiredDate = $_POST['requiredDate'];
 $requiredTime = $_POST['requiredTime'];
-$customerName = $_POST['customerName'];
+$accountName = $_POST['accountName'];
+$recipientName = $_POST['recipientName'];
 $address = $_POST['customer_address'];
 $labelAddreess = $_POST['labelAddress'];
 $email = $_POST['email'];
@@ -25,7 +27,7 @@ $paymentPhoto = $_POST['paymentPhoto'];
 $imgProduct= $_POST['imgProduct'];//array
 $orderType = $_POST['orderType'];
 $orderStatus = $_POST['orderStatus'];
-$ids = $ids = "#".substr(str_shuffle("0123456789ABCDEFGHIJKLmnopqrstvwxyz"), 0, 14);;
+$ids = $ids = "#".substr(str_shuffle("0123456789ABCDEFGHIJKLmnopqrstvwxyz"), 0, 14);
 $response = array();/*
 //*/
 $getCode = $connect->prepare("SELECT customer_id FROM tbladdress WHERE email=?");
@@ -45,9 +47,9 @@ foreach($productCode as $index => $code){
     $priceList = $price[$index];
     $subTotalList = $subTotal[$index];
     $imgProductList = $imgProduct[$index];
-    $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,order_number,customer_id,product_code,order_id,email,product_name,product_variation,quantity,price,add_ons,product_image,order_type,order_status,created_at,required_date,required_time) 
-    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $insertOrderDetails->bind_param('isssssssiisssssss',$orderId,$orderNumber,$customerIDS,$productCodeList,$ids,$email,$productList,$variationList,$quantityList,$priceList,$addOnsList,$imgProductList,$orderType,$orderStatus,$orderDate,$requiredDate,$requiredTime);
+    $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,order_number,customer_id,recipient_name,product_code,order_id,email,product_name,product_variation,quantity,price,add_ons,product_image,order_type,order_status,created_at,required_date,required_time) 
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $insertOrderDetails->bind_param('issssssssiisssssss',$orderId,$orderNumber,$customerIDS,$recipientName,$productCodeList,$ids,$email,$productList,$variationList,$quantityList,$priceList,$addOnsList,$imgProductList,$orderType,$orderStatus,$orderDate,$requiredDate,$requiredTime);
     $insertOrderDetails->execute();
     if($insertOrderDetails)
         $response['success'] = "1";
@@ -62,7 +64,7 @@ foreach($productCode as $index => $code){
 $insertCustomerOrder = $connect->prepare("INSERT INTO tblcustomerorder(id,order_number,customer_id,customer_name,customer_address,label_address,email,phone_number,total_amount,payment_photo) 
 VALUES(?,?,?,?,?,?,?,?,?,?)");
 echo $connect->error;
-$insertCustomerOrder->bind_param('isssssssis',$orderId,$orderNumber,$customerIDS,$customerName,$address,$labelAddreess,$email,$phoneNumber,$totalAmount,$paymentPhoto);
+$insertCustomerOrder->bind_param('isssssssis',$orderId,$orderNumber,$customerIDS,$accountName,$address,$labelAddreess,$email,$phoneNumber,$totalAmount,$paymentPhoto);
 $insertCustomerOrder->execute();
 
 ?>

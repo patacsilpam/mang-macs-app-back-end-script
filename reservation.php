@@ -7,14 +7,16 @@
     $lname = $_POST['lname'];
     $guests = $_POST['guests'];
     $email = $_POST['email'];
+    $dateCode = date('Ymd');
+    $refNumber = $dateCode.bin2hex(openssl_random_pseudo_bytes(5));
     $created_at = date('y-m-d h:i s');
     $scheduled_date = $_POST['scheduled_date'];
     $scheduled_time = $_POST['scheduled_time'];
-    $status = "processing";
+    $status = "Pending";
     //insert
-    $reservation = $connect->prepare("INSERT INTO tblreservation(id,fname,lname,guests,email,created_at,scheduled_date,scheduled_time,status)
-    VALUES(?,?,?,?,?,?,?,?,?)");
-    $reservation->bind_param('ississsss',$id,$fname,$lname,$guests,$email,$created_at,$scheduled_date,$scheduled_time,$status);
+    $reservation = $connect->prepare("INSERT INTO tblreservation(id,refNumber,fname,lname,guests,email,created_at,scheduled_date,scheduled_time,status)
+    VALUES(?,?,?,?,?,?,?,?,?,?)");
+    $reservation->bind_param('isssisssss',$id,$refNumber,$fname,$lname,$guests,$email,$created_at,$scheduled_date,$scheduled_time,$status);
     $reservation->execute();
     if($reservation){
         $response = array();
