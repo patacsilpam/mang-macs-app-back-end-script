@@ -2,7 +2,7 @@
 require 'database/connection.php';
 $id = $_POST['id'];
 $deleteOrder = $connect->prepare("DELETE FROM tblorderdetails WHERE id=?");
-$deleteOrder->bind_param('i',$id);
+$deleteOrder->bind_param('s',$id);
 $deleteOrder->execute();
 $response = array();
 if($deleteOrder){
