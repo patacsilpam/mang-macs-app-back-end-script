@@ -28,6 +28,7 @@ $imgProduct= $_POST['imgProduct'];//array
 $orderType = $_POST['orderType'];
 $orderStatus = $_POST['orderStatus'];
 $ids = $ids = "#".substr(str_shuffle("0123456789ABCDEFGHIJKLmnopqrstvwxyz"), 0, 14);
+$completedTime = "";
 $response = array();/*
 //*/
 $getCode = $connect->prepare("SELECT customer_id FROM tbladdress WHERE email=?");
@@ -47,9 +48,9 @@ foreach($productCode as $index => $code){
     $priceList = $price[$index];
     $subTotalList = $subTotal[$index];
     $imgProductList = $imgProduct[$index];
-    $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,order_number,customer_id,recipient_name,product_code,order_id,email,product_name,product_variation,quantity,price,add_ons,product_image,order_type,order_status,created_at,required_date,required_time) 
-    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $insertOrderDetails->bind_param('issssssssiisssssss',$orderId,$orderNumber,$customerIDS,$recipientName,$productCodeList,$ids,$email,$productList,$variationList,$quantityList,$priceList,$addOnsList,$imgProductList,$orderType,$orderStatus,$orderDate,$requiredDate,$requiredTime);
+    $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,order_number,customer_id,recipient_name,product_code,order_id,email,product_name,product_variation,quantity,price,add_ons,product_image,order_type,order_status,created_at,required_date,required_time,completed_time) 
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $insertOrderDetails->bind_param('issssssssiissssssss',$orderId,$orderNumber,$customerIDS,$recipientName,$productCodeList,$ids,$email,$productList,$variationList,$quantityList,$priceList,$addOnsList,$imgProductList,$orderType,$orderStatus,$orderDate,$requiredDate,$requiredTime,$completedTime);
     $insertOrderDetails->execute();
     if($insertOrderDetails)
         $response['success'] = "1";
