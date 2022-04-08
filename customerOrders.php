@@ -2,10 +2,11 @@
 require 'database/connection.php';
 date_default_timezone_set('Asia/Manila');
 $orderId;
-$customer_id = $_POST['customerID'];
+$customerIDS;
+//$customer_id = $_POST['customerID'];
 $dateCode = date('Ymd');
 $orderNumber = $dateCode.bin2hex(openssl_random_pseudo_bytes(10));
-$customerIDS;
+$ids = $ids = "#".substr(str_shuffle("0123456789ABCDEFGHIJKLmnopqrstvwxyz"), 0, 14);
 $productCode = $_POST['productCode'];//array
 $orderDate = date('y-m-d h:i:s');
 $requiredDate = $_POST['requiredDate'];
@@ -24,13 +25,13 @@ $price = $_POST['price'];//array
 $subTotal =  $_POST['subTotal'];//array
 $totalAmount = $_POST['totalAmount'];
 $paymentPhoto = $_POST['paymentPhoto'];
+$paymentType = $_POST['paymentType'];
 $imgProduct= $_POST['imgProduct'];//array
 $orderType = $_POST['orderType'];
 $orderStatus = $_POST['orderStatus'];
-$ids = $ids = "#".substr(str_shuffle("0123456789ABCDEFGHIJKLmnopqrstvwxyz"), 0, 14);
 $completedTime = "";
-$response = array();/*
-//*/
+$response = array();
+//get the customer id of the user
 $getCode = $connect->prepare("SELECT customer_id FROM tbladdress WHERE email=?");
 $getCode->bind_param('s',$email);
 $getCode->execute();
@@ -38,7 +39,7 @@ $getCode->store_result();
 $getCode->bind_result($id);
 $getCode->fetch();
 $customerIDS = $id;
-
+//insert multiple of orders from users
 foreach($productCode as $index => $code){
     $productCodeList = $code;
     $productList = $product[$index];
@@ -60,12 +61,11 @@ foreach($productCode as $index => $code){
         $updateCart->execute();
         echo json_encode($response);
 }
-
-
-$insertCustomerOrder = $connect->prepare("INSERT INTO tblcustomerorder(id,order_number,customer_id,customer_name,customer_address,label_address,email,phone_number,total_amount,payment_photo) 
-VALUES(?,?,?,?,?,?,?,?,?,?)");
+//insert user infomation
+$insertCustomerOrder = $connect->prepare("INSERT INTO tblcustomerorder(id,order_number,customer_id,customer_name,customer_address,label_address,email,phone_number,total_amount,payment_photo,payment_type) 
+VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 echo $connect->error;
-$insertCustomerOrder->bind_param('isssssssis',$orderId,$orderNumber,$customerIDS,$accountName,$address,$labelAddreess,$email,$phoneNumber,$totalAmount,$paymentPhoto);
+$insertCustomerOrder->bind_param('isssssssiss',$orderId,$orderNumber,$customerIDS,$accountName,$address,$labelAddreess,$email,$phoneNumber,$totalAmount,$paymentPhoto,$paymentType);
 $insertCustomerOrder->execute();
 
 ?>
