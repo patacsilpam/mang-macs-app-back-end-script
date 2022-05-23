@@ -2,8 +2,9 @@
 require_once 'database/connection.php';
 $id = $_GET['id'];
 $response = array();
-$deleteAddress = $connect->prepare("DELETE FROM cart WHERE id=?");
-$deleteAddress->bind_param('i',$id);
+$orderStatus = "Cancelled";
+$deleteAddress = $connect->prepare("UPDATE cart SET cart_status=? WHERE id=?");
+$deleteAddress->bind_param('si',$orderStatus,$id);
 $deleteAddress->execute();
 if($deleteAddress){
     $response['success'] = "1";

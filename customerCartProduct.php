@@ -12,7 +12,7 @@ $lname = $_POST['lname'];
 $price = $_POST['price'];
 $quantity =$_POST['quantity'];
 $add_ons = $_POST['add_ons'];
-$cartStatus = "not ordered";
+$cartStatus = "Not ordered";
 $response = array();
 
 $getCode = $connect->prepare("SELECT productCode,quantity FROM cart WHERE productCode=? AND email=? AND cart_status='not ordered'");

@@ -29,6 +29,7 @@ $paymentType = $_POST['paymentType'];
 $imgProduct= $_POST['imgProduct'];//array
 $orderType = $_POST['orderType'];
 $orderStatus = $_POST['orderStatus'];
+$deliveryFee = $_POST['deliveryFee'];
 $completedTime = "";
 $response = array();
 //get the customer id of the user
@@ -55,17 +56,17 @@ foreach($productCode as $index => $code){
     $insertOrderDetails->execute();
     if($insertOrderDetails)
         $response['success'] = "1";
-        $cartStatus = "ordered";
+        $cartStatus = "Ordered";
         $updateCart = $connect->prepare("UPDATE cart SET cart_status=? WHERE email=?");
         $updateCart->bind_param('ss',$cartStatus,$email);
         $updateCart->execute();
         echo json_encode($response);
 }
 //insert user infomation
-$insertCustomerOrder = $connect->prepare("INSERT INTO tblcustomerorder(id,order_number,customer_id,customer_name,customer_address,label_address,email,phone_number,total_amount,payment_photo,payment_type) 
-VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+$insertCustomerOrder = $connect->prepare("INSERT INTO tblcustomerorder(id,order_number,customer_id,customer_name,customer_address,label_address,email,phone_number,total_amount,payment_photo,payment_type,delivery_fee) 
+VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
 echo $connect->error;
-$insertCustomerOrder->bind_param('isssssssiss',$orderId,$orderNumber,$customerIDS,$accountName,$address,$labelAddreess,$email,$phoneNumber,$totalAmount,$paymentPhoto,$paymentType);
+$insertCustomerOrder->bind_param('isssssssisss',$orderId,$orderNumber,$customerIDS,$accountName,$address,$labelAddreess,$email,$phoneNumber,$totalAmount,$paymentPhoto,$paymentType,$deliveryFee);
 $insertCustomerOrder->execute();
 
 ?>
