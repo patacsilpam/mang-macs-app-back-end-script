@@ -1,7 +1,7 @@
 <?php
      error_reporting(0);
     require 'database/connection.php';
-    $getProduct = $connect->query("SELECT * FROM `tblproducts` WHERE productCategory='Noodles'");
+    $getProduct = $connect->query("SELECT * FROM `tblproducts` WHERE productCategory='Noodles' OR productCategory='Pancit'");
     $data = array();
     while($fetch = $getProduct->fetch_array()){
         $data[] = $fetch;

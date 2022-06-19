@@ -18,6 +18,7 @@ $labelAddreess = $_POST['labelAddress'];
 $email = $_POST['email'];
 $phoneNumber = $_POST['phoneNumber'];
 $product = $_POST['product'];//array
+$category = $_POST['productCategory'];//array
 $variation = $_POST['variation'];//array
 $quantity = $_POST['quantity'];//array
 $add_ons = $_POST['addOns'];//array
@@ -30,6 +31,7 @@ $imgProduct= $_POST['imgProduct'];//array
 $orderType = $_POST['orderType'];
 $orderStatus = $_POST['orderStatus'];
 $deliveryFee = $_POST['deliveryFee'];
+$waitingTime = $_POST['waitingTime'];
 $completedTime = "";
 $response = array();
 //get the customer id of the user
@@ -44,15 +46,16 @@ $customerIDS = $id;
 foreach($productCode as $index => $code){
     $productCodeList = $code;
     $productList = $product[$index];
+    $categoryList = $category[$index];
     $variationList = $variation[$index];
     $quantityList = $quantity[$index];
     $addOnsList = $add_ons[$index];
     $priceList = $price[$index];
     $subTotalList = $subTotal[$index];
     $imgProductList = $imgProduct[$index];
-    $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,order_number,customer_id,recipient_name,product_code,order_id,email,product_name,product_variation,quantity,price,add_ons,product_image,order_type,order_status,created_at,required_date,required_time,completed_time) 
-    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $insertOrderDetails->bind_param('issssssssiissssssss',$orderId,$orderNumber,$customerIDS,$recipientName,$productCodeList,$ids,$email,$productList,$variationList,$quantityList,$priceList,$addOnsList,$imgProductList,$orderType,$orderStatus,$orderDate,$requiredDate,$requiredTime,$completedTime);
+    $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,order_number,customer_id,recipient_name,product_code,order_id,email,product_name,product_category,product_variation,quantity,price,add_ons,product_image,order_type,order_status,created_at,required_date,required_time,completed_time) 
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $insertOrderDetails->bind_param('isssssssssiissssssss',$orderId,$orderNumber,$customerIDS,$recipientName,$productCodeList,$ids,$email,$productList,$categoryList,$variationList,$quantityList,$priceList,$addOnsList,$imgProductList,$orderType,$orderStatus,$orderDate,$requiredDate,$requiredTime,$completedTime);
     $insertOrderDetails->execute();
     if($insertOrderDetails)
         $response['success'] = "1";
@@ -63,10 +66,10 @@ foreach($productCode as $index => $code){
         echo json_encode($response);
 }
 //insert user infomation
-$insertCustomerOrder = $connect->prepare("INSERT INTO tblcustomerorder(id,order_number,customer_id,customer_name,customer_address,label_address,email,phone_number,total_amount,payment_photo,payment_type,delivery_fee) 
-VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+$insertCustomerOrder = $connect->prepare("INSERT INTO tblcustomerorder(id,order_number,customer_id,customer_name,customer_address,label_address,email,phone_number,total_amount,payment_photo,payment_type,delivery_fee,waiting_time) 
+VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
 echo $connect->error;
-$insertCustomerOrder->bind_param('isssssssisss',$orderId,$orderNumber,$customerIDS,$accountName,$address,$labelAddreess,$email,$phoneNumber,$totalAmount,$paymentPhoto,$paymentType,$deliveryFee);
+$insertCustomerOrder->bind_param('isssssssissss',$orderId,$orderNumber,$customerIDS,$accountName,$address,$labelAddreess,$email,$phoneNumber,$totalAmount,$paymentPhoto,$paymentType,$deliveryFee,$waitingTime);
 $insertCustomerOrder->execute();
 
 ?>

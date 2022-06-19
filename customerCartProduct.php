@@ -5,6 +5,7 @@ $id = NULL;
 $email = $_POST['email'];
 $productCode = $_POST['code'];
 $productName = $_POST['product'];
+$productCategory = $_POST['productCategory'];
 $imgProduct = $_POST['imageProduct'];
 $variation = $_POST['variation'];
 $fname = $_POST['fname'];
@@ -34,11 +35,12 @@ if($getCode->num_rows>0){
   }
 }
 else{
-    $insertCart = $connect->prepare("INSERT INTO cart(id,email,productCode,productName,variation,fname,lname,price,quantity,add_ons,imageProduct,cart_status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
-    $insertCart->bind_param('issssssiisss',$id,$email,$productCode,$productName,$variation,$fname,$lname,$price,$quantity,$add_ons,$imgProduct,$cartStatus);
+    $insertCart = $connect->prepare("INSERT INTO cart(id,email,productCode,productName,productCategory,variation,fname,lname,price,quantity,add_ons,imageProduct,cart_status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $insertCart->bind_param('isssssssiisss',$id,$email,$productCode,$productName,$productCategory,$variation,$fname,$lname,$price,$quantity,$add_ons,$imgProduct,$cartStatus);
     $insertCart->execute();
     if($insertCart){
         $response['success'] = "1";
+        
     }
 }
 echo json_encode($response);

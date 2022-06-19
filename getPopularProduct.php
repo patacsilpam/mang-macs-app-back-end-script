@@ -1,12 +1,12 @@
 <?php
     error_reporting(0);
     require 'database/connection.php';
-    $getProduct = $connect->query("SELECT * FROM `tblproducts` WHERE productName='Lasagna' OR productName ='Bihon Guisado' 
-    OR productName='Lomi' GROUP BY productName");
+    $getProduct = $connect->query("SELECT * FROM `tblproducts` WHERE productName='Bagnet' OR productName ='Lemon Chicken' 
+    OR productName='Lomi'  OR productName='Sizzling Pork Sisig' OR productName='Java Rice' GROUP BY productName");
     $data = array();
     while($fetch = $getProduct->fetch_array()){
         $data[] = $fetch;
     }
     echo json_encode($data);
-
+//SELECT * FROM `tblproducts` WHERE productCategory = 'Bbq' OR productCategory = 'Grilled Siomai' OR productCategory = 'Add Ons' GROUP BY productCategory
 ?>

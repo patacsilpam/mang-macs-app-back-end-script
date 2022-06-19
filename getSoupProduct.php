@@ -7,4 +7,5 @@
         $data[] = $fetch;
     }
     echo json_encode($data);
+
 ?>
