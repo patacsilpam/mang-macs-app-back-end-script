@@ -1,7 +1,7 @@
 <?php
     error_reporting(0);
     require 'database/connection.php';
-    $getProduct = $connect->query("SELECT productName,productCategory,preparationTime,productImage,price,
+    $getProduct = $connect->query("SELECT productName,productCategory,preparationTime,productImage,price,mainIngredients,
     GROUP_CONCAT(productVariation SEPARATOR ',') AS 'productVariationBilao',
     GROUP_CONCAT(price  SEPARATOR ',') AS 'groupPriceBilao',
     GROUP_CONCAT(code SEPARATOR ',') AS 'groupCode',

@@ -14,6 +14,7 @@ $price = $_POST['price'];
 $quantity =$_POST['quantity'];
 $add_ons = $_POST['add_ons'];
 $cartStatus = "Not ordered";
+$preparedTime = $_POST['preparedTime'];
 $response = array();
 
 $getCode = $connect->prepare("SELECT productCode,quantity FROM cart WHERE productCode=? AND email=? AND cart_status='not ordered'");
@@ -35,8 +36,8 @@ if($getCode->num_rows>0){
   }
 }
 else{
-    $insertCart = $connect->prepare("INSERT INTO cart(id,email,productCode,productName,productCategory,variation,fname,lname,price,quantity,add_ons,imageProduct,cart_status) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $insertCart->bind_param('isssssssiisss',$id,$email,$productCode,$productName,$productCategory,$variation,$fname,$lname,$price,$quantity,$add_ons,$imgProduct,$cartStatus);
+    $insertCart = $connect->prepare("INSERT INTO cart(id,email,productCode,productName,productCategory,variation,fname,lname,price,quantity,add_ons,imageProduct,cart_status,preparation_time) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $insertCart->bind_param('isssssssiisssi',$id,$email,$productCode,$productName,$productCategory,$variation,$fname,$lname,$price,$quantity,$add_ons,$imgProduct,$cartStatus,$preparedTime);
     $insertCart->execute();
     if($insertCart){
         $response['success'] = "1";

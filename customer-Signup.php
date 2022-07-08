@@ -5,6 +5,7 @@
     date_default_timezone_set('Asia/Manila');
     $id = null;
     $customer_id = bin2hex(openssl_random_pseudo_bytes(11));
+    $token = $_POST['token'];
     $fname = $_POST['fname'];
     $lname = $_POST['lname'];
     $email = $_POST['email_address'];
@@ -35,10 +36,10 @@
     }
     //insert
     else{
-        $insertCustomer = $connect->prepare("INSERT INTO tblcustomers(`id`,`customer_id`,`fname`,`lname`,`email_address`,`user_password`,`gender`,`birthdate`,`customer_image`,`created_account`,`user_status`,`code`)
-        VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
+        $insertCustomer = $connect->prepare("INSERT INTO tblcustomers(`id`,`token`,`customer_id`,`fname`,`lname`,`email_address`,`user_password`,`gender`,`birthdate`,`customer_image`,`created_account`,`user_status`,`code`)
+        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
         echo $connect->error;
-       $insertCustomer->bind_param('issssssssssi',$id,$customer_id,$fname,$lname,$email,$pwordHash,$gender,$birthdate,$profileImage,$createdAt,$status,$vercode);
+       $insertCustomer->bind_param('isssssssssssi',$id,$token,$customer_id,$fname,$lname,$email,$pwordHash,$gender,$birthdate,$profileImage,$createdAt,$status,$vercode);
         $insertCustomer->execute();
         if($insertCustomer){
             $response['success'] = "1";

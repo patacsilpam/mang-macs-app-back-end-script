@@ -1,6 +1,7 @@
 <?php
 error_reporting(0);
 require 'database/connection.php';
+$response = array();
 $myemail = $_POST["email"];
 $mypassword = $_POST["currentPassword"];
 $newPassword = $_POST['newPassword'];

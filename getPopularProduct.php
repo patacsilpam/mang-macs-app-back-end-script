@@ -8,5 +8,4 @@
         $data[] = $fetch;
     }
     echo json_encode($data);
-//SELECT * FROM `tblproducts` WHERE productCategory = 'Bbq' OR productCategory = 'Grilled Siomai' OR productCategory = 'Add Ons' GROUP BY productCategory
 ?>
