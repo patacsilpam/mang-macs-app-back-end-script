@@ -13,7 +13,6 @@ $updateAddress->execute();
 $response = array();
 if($updateAddress->execute()){
     $response['success'] = "1";
-    $response['message'] = "Edit Saved";
 }
 else{
     $response['success'] = "0";

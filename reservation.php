@@ -1,5 +1,5 @@
 <?php
-    error_reporting(0);
+   
     require_once 'database/connection.php';
     date_default_timezone_set('Asia/Manila');
     $id = null;
@@ -18,6 +18,7 @@
     $status = "Pending";
     $notifDate = date('y-m-d h:i:s');
     $remove = 'Not Removed';
+    $response = array();
     //get the customer id
     $getCustomerID = $connect->prepare("SELECT customer_id FROM tblcustomers WHERE email_address=?");
     $getCustomerID->bind_param('s',$email);
@@ -27,12 +28,11 @@
     $getCustomerID->fetch();
     $customerId = $ids;
     //insert
-    $reservation = $connect->prepare("INSERT INTO tblreservation(id,token,customer_id,refNumber,fname,lname,guests,email,phone_number,created_at,scheduled_date,scheduled_time,status,notif_date,remove_status)
-    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $reservation->bind_param('isssssissssssss',$id,$token,$customerId,$refNumber,$fname,$lname,$guests,$email,$phoneNumber,$created_at,$scheduled_date,$scheduled_time,$status,$notifDate,$remove);
+    $reservation = $connect->prepare("INSERT INTO tblreservation(id,token,customer_id,refNumber,fname,lname,guests,email,phone_number,created_at,scheduled_date,scheduled_time,status,remove_status)
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $reservation->bind_param('isssssisssssss',$id,$token,$customerId,$refNumber,$fname,$lname,$guests,$email,$phoneNumber,$created_at,$scheduled_date,$scheduled_time,$status,$remove);
     $reservation->execute();
     if($reservation){
-        $response = array();
         $response['success'] = "1";
         $response['message'] = "Success";
     }

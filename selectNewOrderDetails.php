@@ -2,6 +2,7 @@
 require 'database/connection.php';
 $emailAddress = mysqli_real_escape_string($connect,$_GET['emailAddress']);
 $orderNumber = mysqli_real_escape_string($connect,$_GET['orderNumber']);
+$cancelledOrder ='Cancelled';
 $selectNewOrders = $connect->query("SELECT tblcustomerorder.customer_name,tblcustomerorder.customer_address,
  tblcustomerorder.label_address,tblcustomerorder.email,tblcustomerorder.phone_number, 
  tblcustomerorder.payment_photo,tblorderdetails.order_number,tblorderdetails.id,
@@ -11,7 +12,8 @@ $selectNewOrders = $connect->query("SELECT tblcustomerorder.customer_name,tblcus
  (SELECT SUM(tblorderdetails.price * tblorderdetails.quantity)
  FROM tblorderdetails WHERE order_number='$orderNumber') as 'total_amount' 
  FROM tblorderdetails LEFT JOIN tblcustomerorder ON tblcustomerorder.order_number = tblorderdetails.order_number 
- WHERE tblcustomerorder.email='$emailAddress' AND tblorderdetails.order_number='$orderNumber'");
+ WHERE tblcustomerorder.email='$emailAddress' AND tblorderdetails.order_number='$orderNumber' 
+ ");
 $response = array();
 while($fetch = $selectNewOrders->fetch_assoc()){
     $response[] = $fetch;
