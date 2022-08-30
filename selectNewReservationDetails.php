@@ -9,7 +9,7 @@ tblreservation.email,tblreservation.created_at,DATE_FORMAT(tblreservation.schedu
 tblreservation.status,tblreservation.totalAmount,tblreservation.payment_photo,
 tblorderdetails.product_code,tblorderdetails.product_name,tblorderdetails.product_category,
 tblorderdetails.product_variation,tblorderdetails.quantity,tblorderdetails.price,tblorderdetails.add_ons,
-tblorderdetails.product_image,tblorderdetails.completed_time 
+tblorderdetails.product_image,tblorderdetails.completed_time,tblorderdetails.preparation_time
 FROM tblreservation LEFT JOIN tblorderdetails
 ON tblreservation.refNumber = tblorderdetails.order_number
 WHERE tblreservation.email='$emailAddress' AND tblreservation.refNumber='$orderNumber'");

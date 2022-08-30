@@ -6,9 +6,9 @@ $emailAddress = mysqli_real_escape_string($connect,$_GET['emailAddress']);
 $selectNewOrders = $connect->query("SELECT tblreservation.id,tblreservation.refNumber,tblreservation.fname,tblreservation.lname,tblreservation.guests,
 tblreservation.email,tblreservation.created_at,DATE_FORMAT(tblreservation.scheduled_date,'%a,  %b %d, %Y') as 'scheduled_date',tblreservation.scheduled_time,
 tblreservation.status,tblreservation.totalAmount,tblreservation.payment_photo,
-tblorderdetails.product_code,tblorderdetails.product_name,tblorderdetails.product_category,
+tblorderdetails.product_code,tblorderdetails.product_name,tblorderdetails.product_category,tblorderdetails.product_code,
 tblorderdetails.product_variation,tblorderdetails.quantity,tblorderdetails.price,tblorderdetails.add_ons,
-tblorderdetails.product_image,tblorderdetails.completed_time 
+tblorderdetails.product_image,tblorderdetails.completed_time
 FROM tblreservation LEFT JOIN tblorderdetails
 ON tblreservation.refNumber = tblorderdetails.order_number
 WHERE STR_TO_DATE(CONCAT(scheduled_date,' ', scheduled_time),'%Y-%m-%d %h:%i %p') >= DATE_SUB(CURDATE(), INTERVAL 30 MINUTE) 
@@ -20,15 +20,5 @@ while($fetch = $selectNewOrders->fetch_assoc()){
 
 }
 echo json_encode($response);
-/*
-SELECT tblreservation.id,tblreservation.fname,tblreservation.lname,tblreservation.guests,
-tblreservation.email,tblreservation.created_at,tblreservation.scheduled_date,tblreservation.scheduled_time,
-tblreservation.status,tblreservation.totalAmount,tblreservation.payment_photo,
-tblorderdetails.product_code,tblorderdetails.product_name,tblorderdetails.product_category,
-tblorderdetails.product_variation,tblorderdetails.quantity,tblorderdetails.price,tblorderdetails.add_ons,
-tblorderdetails.product_image,tblorderdetails.completed_time 
-FROM tblreservation LEFT JOIN tblorderdetails
-ON tblreservation.refNumber = tblorderdetails.order_number
-WHERE STR_TO_DATE(CONCAT(scheduled_date,' ', scheduled_time),'%Y-%m-%d %h:%i %p') >= DATE_SUB(CURDATE(), INTERVAL 30 MINUTE);
-*/
+
 ?>

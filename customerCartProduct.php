@@ -24,7 +24,7 @@ $getCode->store_result();
 $getCode->bind_result($code,$add);
 if($getCode->num_rows>0){
    $getCode->fetch();
-   if($code == $productCode){
+   if($code == $productCode){ 
     $add = 0;
     $addQuantity = $add + $quantity;
     $updateQuantity=$connect->prepare("UPDATE cart SET quantity=?,add_ons=? WHERE productCode=? AND email=? AND cart_status='not ordered'");
