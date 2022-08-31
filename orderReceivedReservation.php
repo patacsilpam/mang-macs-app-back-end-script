@@ -7,6 +7,9 @@
     $updateOrderStatus->bind_param('ss',$orderReceived,$orderNumber);
     $updateOrderStatus->execute();
     if($updateOrderStatus){
+        $updateBookStatus = $connect->prepare("UPDATE tblreservation SET status=? WHERE refNumber=?");
+        $updateBookStatus->bind_param('ss',$orderReceived,$orderNumber);
+        $updateBookStatus->execute();
         $response['success'] = "1";
     }
     echo json_encode($response);
