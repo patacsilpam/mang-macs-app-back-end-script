@@ -23,6 +23,8 @@ $category = $_POST['productCategory'];//array
 $variation = $_POST['variation'];//array
 $quantity = $_POST['quantity'];//array
 $add_ons = $_POST['addOns'];//array
+$addOnsFee = $_POST['addOnsFee'];//array
+$specialRequest = $_POST['specialRequest'];
 $price = $_POST['price'];//array
 $subTotal =  $_POST['subTotal'];//array
 $totalAmount = $_POST['totalAmount'];
@@ -37,7 +39,7 @@ $waitingTime = $_POST['waitingTime'];
 $notifDate = date('y-m-d h:i');
 $customerId = $_POST['customerId'];
 $completedTime = "";
-$sample = "Sample";
+$courier = "";
 $response = array();
 
 foreach($productCode as $index => $code){
@@ -47,13 +49,15 @@ foreach($productCode as $index => $code){
         $variationList = $variation[$index];
         $quantityList = $quantity[$index];
         $addOnsList = $add_ons[$index];
+        $addOnsFeeList = $addOnsFee[$index];
+        $specialRequestList = $specialRequest[$index];
         $priceList = $price[$index];
         $subTotalList = $subTotal[$index];
         $imgProductList = $imgProduct[$index];
         $preparationTimeList = $preparationTime[$index];
-        $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,order_number,customer_id,recipient_name,product_code,order_id,email,product_name,product_category,product_variation,quantity,price,add_ons,product_image,order_type,order_status,created_at,required_date,required_time,completed_time,notif_date,preparation_time) 
-        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $insertOrderDetails->bind_param('isssssssssiissssssssss',$orderId,$orderNumber,$customerIDS,$recipientName,$productCodeList,$ids,$email,$productList,$categoryList,$variationList,$quantityList,$priceList,$addOnsList,$imgProductList,$orderType,$orderStatus,$orderDate,$requiredDate,$requiredTime,$completedTime,$notifDate,$preparationTimeList);
+        $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,order_number,customer_id,recipient_name,product_code,order_id,email,product_name,product_category,product_variation,quantity,price,add_ons,add_ons_fee,special_request,product_image,order_type,order_status,created_at,required_date,required_time,completed_time,notif_date,preparation_time) 
+        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $insertOrderDetails->bind_param('isssssssssiisissssssssss',$orderId,$orderNumber,$customerIDS,$recipientName,$productCodeList,$ids,$email,$productList,$categoryList,$variationList,$quantityList,$priceList,$addOnsList,$addOnsFeeList,$specialRequestList,$imgProductList,$orderType,$orderStatus,$orderDate,$requiredDate,$requiredTime,$completedTime,$notifDate,$preparationTimeList);
         $insertOrderDetails->execute();
         if($insertOrderDetails){
             $response['success'] = "1";
@@ -65,10 +69,10 @@ foreach($productCode as $index => $code){
         }
 }
     //insert user infomation
-    $insertCustomerOrder = $connect->prepare("INSERT INTO tblcustomerorder(id,token,order_number,customer_id,customer_name,customer_address,label_address,email,phone_number,total_amount,payment_photo,payment_type,delivery_fee,waiting_time) 
-    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $insertCustomerOrder = $connect->prepare("INSERT INTO tblcustomerorder(id,token,order_number,customer_id,customer_name,customer_address,label_address,email,phone_number,total_amount,payment_photo,payment_type,delivery_fee,waiting_time,courier) 
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
     echo $connect->error;
-    $insertCustomerOrder->bind_param('issssssssissss',$orderId,$token,$orderNumber,$customerId,$accountName,$address,$labelAddreess,$email,$phoneNumber,$totalAmount,$paymentPhoto,$paymentType,$deliveryFee,$waitingTime);
+    $insertCustomerOrder->bind_param('issssssssisssss',$orderId,$token,$orderNumber,$customerId,$accountName,$address,$labelAddreess,$email,$phoneNumber,$totalAmount,$paymentPhoto,$paymentType,$deliveryFee,$waitingTime,$courier);
     $insertCustomerOrder->execute();
 //notiy user if he selects "now" tab in pick up
 

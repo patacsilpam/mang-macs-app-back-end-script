@@ -43,6 +43,8 @@
     $variation = $_POST['variation'];//array
     $quantity = $_POST['quantity'];//array
     $add_ons = $_POST['addOns'];//array
+    $addOnsFee = $_POST['addOnsFee'];//array
+    $specialRequest = $_POST['specialRequest'];//array
     $price = $_POST['price'];//array
     $subTotal =  $_POST['subTotal'];//array
     $totalAmount = $_POST['totalAmount'];
@@ -61,13 +63,15 @@
         $variationList = $variation[$index];
         $quantityList = $quantity[$index];
         $addOnsList = $add_ons[$index];
+        $addOnsFeeList = $addOnsFee[$index];
+        $specialReqList = $specialRequest[$index];
         $priceList = $price[$index];
         $subTotalList = $subTotal[$index];
         $imgProductList = $imgProduct[$index];
         $preparationTimeList = $preparationTime[$index];
-        $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,order_number,customer_id,recipient_name,product_code,order_id,email,product_name,product_category,product_variation,quantity,price,add_ons,product_image,order_type,order_status,created_at,required_date,required_time,completed_time,notif_date,preparation_time) 
-        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        $insertOrderDetails->bind_param('isssssssssiissssssssss',$orderId,$orderNumber,$customerId,$recipientName,$productCodeList,$ids,$email,$productList,$categoryList,$variationList,$quantityList,$priceList,$addOnsList,$imgProductList,$orderType,$orderStatus,$orderDate,$scheduled_date,$scheduled_time,$completedTime,$notifDate,$preparationTimeList);
+        $insertOrderDetails = $connect->prepare("INSERT INTO tblorderdetails(id,order_number,customer_id,recipient_name,product_code,order_id,email,product_name,product_category,product_variation,quantity,price,add_ons,add_ons_fee,special_request,product_image,order_type,order_status,created_at,required_date,required_time,completed_time,notif_date,preparation_time) 
+        VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $insertOrderDetails->bind_param('isssssssssiisissssssssss',$orderId,$orderNumber,$customerId,$recipientName,$productCodeList,$ids,$email,$productList,$categoryList,$variationList,$quantityList,$priceList,$addOnsList,$addOnsFeeList,$specialReqList,$imgProductList,$orderType,$orderStatus,$orderDate,$scheduled_date,$scheduled_time,$completedTime,$notifDate,$preparationTimeList);
         $insertOrderDetails->execute();
         if($insertOrderDetails){
             $response['success'] = "1";
