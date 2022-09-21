@@ -3,21 +3,21 @@
    $data = array();
    function fetchPizzaDb(){
       require 'database/connection.php';
-      $getProduct = $connect->query("SELECT productName,productCategory,preparationTime,productImage,price,mainIngredients,
-      GROUP_CONCAT(DISTINCT(productVariation) ORDER BY tblproducts.id ASC SEPARATOR ',') AS 'productVariation',
-      GROUP_CONCAT(DISTINCT(price) ORDER BY tblproducts.id SEPARATOR ',') AS 'groupPrice',
-      GROUP_CONCAT(DISTINCT(code) SEPARATOR ',') AS 'groupCode',
-      GROUP_CONCAT(DISTINCT(stocks) SEPARATOR ',') AS 'stocks',
-      GROUP_CONCAT(DISTINCT(preparationTime) SEPARATOR ',') AS 'groupPreparationTime',
-      (SELECT GROUP_CONCAT(tbladdons.add_ons ORDER BY tbladdons.id ASC SEPARATOR ',') FROM tbladdons 
-      WHERE tblproducts.productCategory = 'Pizza' GROUP BY tblproducts.productName) as 'groupAddOns',
-      (SELECT GROUP_CONCAT(tbladdons.add_ons_price ORDER BY tbladdons.id ASC  SEPARATOR ',') FROM tbladdons 
-      WHERE tblproducts.productCategory = 'Pizza' GROUP BY tblproducts.productName) as 'groupAddOnsPrice'
-      FROM `tbladdons` LEFT JOIN tblproducts
+      $getProduct = $connect->query("SELECT tblproducts.productName,tblproducts.productCategory,
+      tblproducts.preparationTime,tblproducts.productImage,tblproducts.price,tblproducts.mainIngredients,
+      GROUP_CONCAT(DISTINCT(tblproducts.productVariation) ORDER BY tblproducts.id ASC SEPARATOR ',') AS 'productVariation',
+      GROUP_CONCAT(DISTINCT(tblproducts.price) ORDER BY tblproducts.id SEPARATOR ',') AS 'groupPrice',
+      GROUP_CONCAT(DISTINCT(tblproducts.code) SEPARATOR ',') AS 'groupCode',
+      GROUP_CONCAT(DISTINCT(tblproducts.stocks) SEPARATOR ',') AS 'stocks',
+      GROUP_CONCAT(DISTINCT(tblproducts.preparationTime) SEPARATOR ',') AS 'groupPreparationTime',
+      (SELECT GROUP_CONCAT(tbladdons.add_ons ORDER BY tbladdons.id ASC SEPARATOR ',') 
+      FROM tbladdons WHERE tbladdons.add_ons_category = 'Pizza') as 'groupAddOns',
+      (SELECT GROUP_CONCAT(tbladdons.add_ons_price ORDER BY tbladdons.id ASC  SEPARATOR ',') 
+      FROM tbladdons WHERE tbladdons.add_ons_category  = 'Pizza') as 'groupAddOnsPrice'
+      FROM `tbladdons` RIGHT JOIN tblproducts
       ON tblproducts.productCategory = tbladdons.add_ons_category 
       WHERE tblproducts.productCategory = 'Pizza'
       GROUP BY tblproducts.productName ORDER BY tblproducts.id ASC");
-      //$data = array();
       while($fetch = $getProduct->fetch_array()){
          $data[] = $fetch;
       }

@@ -19,8 +19,8 @@ $cartStatus = "Not ordered";
 $preparedTime = $_POST['preparedTime'];
 $response = array();
 
-$getCode = $connect->prepare("SELECT productCode,quantity FROM cart WHERE productCode=? AND email=? AND cart_status='Not Ordered'");
-$getCode->bind_param('ss',$productCode,$email);
+$getCode = $connect->prepare("SELECT productCode,quantity FROM cart WHERE productCode=? AND email=? AND cart_status=?");
+$getCode->bind_param('sss',$productCode,$email,$cartStatus);
 $getCode->execute();
 $getCode->store_result();
 $getCode->bind_result($code,$add);
@@ -29,8 +29,8 @@ if($getCode->num_rows>0){
    if($code == $productCode){ 
     $add = 0;
     $addQuantity = $add + $quantity;
-    $updateQuantity=$connect->prepare("UPDATE cart SET quantity=?,add_ons=?,add_ons_fee=? WHERE productCode=? AND email=? AND cart_status='Not Ordered'");
-    $updateQuantity->bind_param('issis',$addQuantity,$add_ons,$addOnsFee,$productCode,$email);
+    $updateQuantity=$connect->prepare("UPDATE cart SET quantity=?,add_ons=?,add_ons_fee=?,special_request=? WHERE productCode=? AND email=? AND cart_status=?");
+    $updateQuantity->bind_param('isissss',$addQuantity,$add_ons,$addOnsFee,$specialRequest,$productCode,$email,$cartStatus);
     $updateQuantity->execute();
     if($updateQuantity){
         $response['success'] = "1";
