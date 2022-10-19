@@ -17,14 +17,16 @@
     $scheduled_time = $_POST['scheduled_time'];
     $paymentPhoto = $_POST['paymentPhoto'];
     $totalAmount = $_POST['totalAmount'];
+    $diningArea = $_POST['diningArea'];
+    $comments = $_POST['comments'];
     $status = "Pending";
     $notifDate = date('y-m-d h:i:s');
     $remove = 'Not Removed';
     $response = array();
     //insert
-    $reservation = $connect->prepare("INSERT INTO tblreservation(id,token,customer_id,refNumber,fname,lname,guests,email,created_at,scheduled_date,scheduled_time,status,totalAmount,payment_photo)
-    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $reservation->bind_param('isssssisssssis',$id,$token,$customerId,$orderNumber,$fname,$lname,$guests,$email,$created_at,$scheduled_date,$scheduled_time,$status,$totalAmount,$paymentPhoto);
+    $reservation = $connect->prepare("INSERT INTO tblreservation(id,token,customer_id,refNumber,fname,lname,guests,email,created_at,scheduled_date,scheduled_time,status,totalAmount,payment_photo,dining_area,comments)
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $reservation->bind_param('isssssisssssisss',$id,$token,$customerId,$orderNumber,$fname,$lname,$guests,$email,$created_at,$scheduled_date,$scheduled_time,$status,$totalAmount,$paymentPhoto,$diningArea,$comments);
     $reservation->execute();
     if($reservation){
         $response['success'] = "1";
