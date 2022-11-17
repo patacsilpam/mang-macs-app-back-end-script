@@ -18,7 +18,7 @@ $specialRequest = $_POST['specialRequest'];
 $cartStatus = "Not ordered";
 $preparedTime = $_POST['preparedTime'];
 $response = array();
-
+$insertCode = "";
 $getCode = $connect->prepare("SELECT productCode,quantity FROM cart WHERE productCode=? AND email=? AND cart_status=?");
 $getCode->bind_param('sss',$productCode,$email,$cartStatus);
 $getCode->execute();
@@ -26,6 +26,7 @@ $getCode->store_result();
 $getCode->bind_result($code,$add);
 if($getCode->num_rows>0){
    $getCode->fetch();
+   //$insertCode = $code;
    if($code == $productCode){ 
     $add = 0;
     $addQuantity = $add + $quantity;
@@ -46,5 +47,6 @@ else{
         
     }
 }
+
 echo json_encode($response);
 ?>

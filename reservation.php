@@ -11,30 +11,27 @@
     $guests = $_POST['guests'];
     $email = $_POST['email'];
     $dateCode = date('Ymd');
-    $orderNumber = $dateCode.bin2hex(openssl_random_pseudo_bytes(5));
-    $created_at = date('y-m-d h:i s');
+    $orderNumber = $dateCode.rand(1000,9999);
+    $created_at = date('y-m-d h:i:s');
     $scheduled_date = $_POST['scheduled_date'];
     $scheduled_time = $_POST['scheduled_time'];
-    $paymentPhoto = $_POST['paymentPhoto'];
-    $totalAmount = $_POST['totalAmount'];
-    $diningArea = $_POST['diningArea'];
+    $paymentPhoto = $_POST['payment_photo'];
     $comments = $_POST['comments'];
     $status = "Pending";
     $notifDate = date('y-m-d h:i:s');
-    $remove = 'Not Removed';
     $response = array();
     //insert
-    $reservation = $connect->prepare("INSERT INTO tblreservation(id,token,customer_id,refNumber,fname,lname,guests,email,created_at,scheduled_date,scheduled_time,status,totalAmount,payment_photo,dining_area,comments)
-    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-    $reservation->bind_param('isssssisssssisss',$id,$token,$customerId,$orderNumber,$fname,$lname,$guests,$email,$created_at,$scheduled_date,$scheduled_time,$status,$totalAmount,$paymentPhoto,$diningArea,$comments);
+    $reservation = $connect->prepare("INSERT INTO tblreservation(id,token,customer_id,refNumber,fname,lname,guests,email,created_at,scheduled_date,scheduled_time,status,payment_photo,comments)
+    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    $reservation->bind_param('isssssisssssss',$id,$token,$customerId,$orderNumber,$fname,$lname,$guests,$email,$created_at,$scheduled_date,$scheduled_time,$status,$paymentPhoto,$comments);
     $reservation->execute();
     if($reservation){
         $response['success'] = "1";
-        $response['message'] = "Success";
+        //$response['message'] = "Success";
     }
     echo json_encode($response);
     //insert order details
-    $ids = "#".substr(str_shuffle("0123456789ABCDEFGHIJKLmnopqrstvwxyz"), 0, 14);
+    /*$ids = "#".substr(str_shuffle("0123456789ABCDEFGHIJKLmnopqrstvwxyz"), 0, 14);
     $token = $_POST['token'];
     $productCode = $_POST['productCode'];//array
     $orderDate = date('y-m-d');
@@ -83,5 +80,5 @@
             $updateCart->execute();
             echo json_encode($response);
         }
-    }
+    }*/
 ?>
